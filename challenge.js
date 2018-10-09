@@ -24,10 +24,16 @@ $numbers.innerHTML = array.toString()
 
 let answer = new Set(array.sort())
 let answerArray = [...answer]
-let count = 0
+
+let count = window.localStorage.getItem('count')
+if (count) {
+  parseInt(count, 10)
+}
+else {
+  localStorage.setItem('count', 0)
+}
 
 $submitButton.addEventListener('click', () => {
-  count++
   const userAnswer = document.querySelector("input").value.split(",")
   for (let i = 0; i < userAnswer.length; i++) {
     userAnswer[i] = parseInt(userAnswer[i], 10)
@@ -37,8 +43,14 @@ $submitButton.addEventListener('click', () => {
   if (checked) {
     window.location.href = 'pass.html'
   }
-  else {
+  else if (!checked && count <= 2) {
+    console.log(count)
+    count++
+    localStorage.setItem('count', JSON.stringify(count))
     window.location.href = 'retry.html'
+  }
+  else {
+    window.location.href = 'fail.html'
   }
 })
 
